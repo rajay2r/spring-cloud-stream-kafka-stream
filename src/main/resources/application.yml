@@ -1,0 +1,43 @@
+spring.cloud.stream.kafka.binder:
+  brokers:
+    - localhost:9092
+
+spring.cloud.stream.kafka.streams.binder:
+  applicationId: word-count-sample
+  configuration:
+    commit.interval.ms: 100
+    default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+spring.cloud.stream.bindings.words_output_channel:
+  destination: words_topic
+  producer:
+    headerMode: none
+
+spring.cloud.stream.bindings.words_input_channel:
+  destination: words_topic
+  consumer:
+    headerMode: none
+
+spring.cloud.stream.bindings.counts_output_channel:
+  destination: counts_topic
+  producer:
+    useNativeEncoding: true
+
+spring.cloud.stream.bindings.counts_input_channel:
+  destination: counts_topic
+  consumer:
+    useNativeDecoding: true
+    headerMode: none
+  group: wordscount
+  contentType: application/json
+
+spring.cloud.stream.kafka.streams.bindings.counts_output_channel:
+  producer:
+    keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    valueSerde: org.apache.kafka.common.serialization.Serdes$LongSerde
+
+spring.cloud.stream.kafka.streams.bindings.counts_input_channel:
+  consumer:
+    keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    valueSerde: org.apache.kafka.common.serialization.Serdes$LongSerde
